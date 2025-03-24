@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
+#include <sstream>
 
 // Function to pad two strings to the same length
 int same_len(std::string& num1, std::string& num2) {
@@ -47,19 +48,16 @@ int main() {
     std::string num1, num2;
     int base;
 
-    // Taking input for the numbers and base
-    std::cout << "Enter the first number: ";
-    std::cin >> num1;
-    std::cout << "Enter the second number: ";
-    std::cin >> num2;
-    std::cout << "Enter the base: ";
-    std::cin >> base;
+    // Read the whole line first
+    std::string line;
+    std::getline(std::cin, line);
 
-    // Perform addition
-    std::string result = addition(num1, num2, base);
+    // Use stringstream to extract the numbers and base
+    std::stringstream ss(line);
+    ss >> num1 >> num2 >> base; // Extract 2 numbers and the base
 
-    // Output the result
-    std::cout << "Result of addition in base " << base << ": " << result << std::endl;
+    std::string add = addition(num1, num2, base);
+    std::cout << add << 0 << 0 << std::endl;
 
     return 0;
 }
