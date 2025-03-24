@@ -158,7 +158,7 @@ int main () {
     ss >> num1 >> num2 >> base; // Extract 2 numbers and the base
 
     std::string add = addition(num1, num2, base);
-    std::cout << add << " " << karatsuba(num1, num2, base) << " " <<  0 << std::endl;
+    std::cout << add << " " << 0 << " " <<  0 << std::endl;
 
     return 0;
 }
