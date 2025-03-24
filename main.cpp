@@ -112,7 +112,7 @@ std::string karatsuba(std::string num1, std::string num2, int base) {
         return int_to_string(product, base);
     }
 
-    int len = std::max(num1.size(), num2.size());
+    int len = same_len(num1, num2);
     int half_len = len / 2;
 
     std::string a1 = num1.substr(0, num1.size() - half_len);
@@ -121,17 +121,17 @@ std::string karatsuba(std::string num1, std::string num2, int base) {
     std::string b0 = num2.substr(num2.size() - half_len);
 
     // Recursively calculate three products
-    std::string z0 = karatsuba(a0, b0, base);
-    std::string z2 = karatsuba(a1, b1, base);
-    std::string z1 = karatsuba(addition(a1, a0, base), addition(b1, b0, base), base);
+    std::string p0 = karatsuba(a0, b0, base);
+    std::string p2 = karatsuba(a1, b1, base);
+    std::string p1 = karatsuba(addition(a1, a0, base), addition(b1, b0, base), base);
 
     // z1 - z2 - z0
-    std::string temp = subtraction(z1, z2, base);
-    temp = subtraction(temp, z0, base);
+    std::string temp = subtraction(p1, p2, base);
+    temp = subtraction(temp, p0, base);
 
     // Multiply the result by appropriate powers of the base
     for (int i = 0; i < 2 * half_len; i++) {
-        z2 += '0';
+        p2 += '0';
     }
 
     for (int i = 0; i < half_len; i++) {
@@ -139,9 +139,15 @@ std::string karatsuba(std::string num1, std::string num2, int base) {
     }
 
     // Add z2, temp, and z0
-    std::string result = addition(z2, temp, base);
-    result = addition(result, z0, base);
+    std::string result = addition(p2, temp, base);
+    result = addition(result, p0, base);
 
+    // remove leading 0s if have
+    while (result.size() > 1 && result[0] == '0') {
+        result = result.substr(1);
+    }
+
+    
     return result;
 }
 
@@ -158,7 +164,7 @@ int main () {
     ss >> num1 >> num2 >> base; // Extract 2 numbers and the base
 
     std::string add = addition(num1, num2, base);
-    std::cout << add << " " << 0 << " " <<  0 << std::endl;
+    std::cout << add << " " << karatsuba(num1, num2, base) << " " <<  0 << std::endl;
 
     return 0;
 }
