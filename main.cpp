@@ -126,7 +126,7 @@ std::string karatsuba(std::string num1, std::string num2, int base) {
         temp += '0';
     }
 
-    // Add z2, temp, and z0
+    // Add p2, temp, and p0
     std::string result = addition(p2, temp, base);
     result = addition(result, p0, base);
 
