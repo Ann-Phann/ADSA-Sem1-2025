@@ -82,18 +82,6 @@ std::string subtraction(std::string& num1, std::string& num2, int base) {
     return result;
 }
 
-// Convert string representation of a number to an integer (for base 10 conversion)
-int string_to_int(const std::string& str, int base) {
-    int result = 0;
-    int power = 1;
-    for (int i = str.size() - 1; i >= 0; i--) {
-        int digit = str[i] - '0';
-        result += digit * power;
-        power *= base;
-    }
-    return result;
-}
-
 // Convert integer to string representation in the given base
 std::string int_to_string(int num, int base) {
     std::string result = "";
