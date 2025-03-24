@@ -34,7 +34,7 @@ std::string addition(std::string& num1, std::string& num2, int base) {
         carry = sum / base;
         int digit = sum % base;
         result = (char)(digit + '0') + result;
-        std::cout << "result: " << result << std::endl;
+        //std::cout << "result: " << result << std::endl;
     }
 
     // if there still carry
@@ -158,7 +158,7 @@ int main () {
     ss >> num1 >> num2 >> base; // Extract 2 numbers and the base
 
     std::string add = addition(num1, num2, base);
-    std::cout << add << " " << 0 << " " <<  0 << std::endl;
+    std::cout << add << " " << karatsuba(num1, num2, base) << " " <<  0 << std::endl;
 
     return 0;
 }
