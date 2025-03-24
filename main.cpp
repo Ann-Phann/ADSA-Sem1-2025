@@ -113,7 +113,7 @@ std::string karatsuba(std::string num1, std::string num2, int base) {
     std::string p2 = karatsuba(a1, b1, base);
     std::string p1 = karatsuba(addition(a1, a0, base), addition(b1, b0, base), base);
 
-    // z1 - z2 - z0
+    // p1 - p2 - p0
     std::string temp = subtraction(p1, p2, base);
     temp = subtraction(temp, p0, base);
 
@@ -134,7 +134,6 @@ std::string karatsuba(std::string num1, std::string num2, int base) {
     while (result.size() > 1 && result[0] == '0') {
         result = result.substr(1);
     }
-
     
     return result;
 }
