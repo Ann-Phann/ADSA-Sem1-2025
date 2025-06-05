@@ -172,21 +172,41 @@ int Kruskal_Cost(std::vector<Edge>& edges, int numberOfCity) {
     // call and use union find in this algorithm
     UnionFind uf(numberOfCity);
 
+    // for (auto& e : edges) {
+    //     // if build 
+    //     if (e.isBuild) {
+    //         // then check if it is not in the same unionset
+    //         if (uf.unionSet(e.u, e.v)) {
+    //             totalCost += e.cost;
+    //         }
+    //     } 
+    //     // case: in the same set: can't union --> destroy
+    //     else {
+    //         if (!uf.unionSet(e.u, e.v)) {
+    //             totalCost += e.cost;
+    //         }
+    //     }
+    // }
+
+    // First, process all existing edges (destroy edges)
     for (auto& e : edges) {
-        // if build 
-        if (e.isBuild) {
-            // then check if it is not in the same unionset
-            if (uf.unionSet(e.u, e.v)) {
-                totalCost += e.cost;
-            }
-        } 
-        // case: in the same set: can't union --> destroy
-        else {
+        if (!e.isBuild) {
             if (!uf.unionSet(e.u, e.v)) {
-                totalCost += e.cost;
+                totalCost += e.cost; // Need to destroy this edge
             }
         }
     }
+
+    // Then, process all build edges
+    sort(edges.begin(), edges.end());
+    for (auto& e : edges) {
+        if (e.isBuild) {
+            if (uf.unionSet(e.u, e.v)) {
+                totalCost += e.cost; // Build this edge
+            }
+        }
+    }
+
     return totalCost;
 }
 
