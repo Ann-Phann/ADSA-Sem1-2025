@@ -283,27 +283,26 @@ int Kruskal_Cost(std::vector<Edge>& edges, int n) {
 
     // Now, populate edges with the costs for the MST algorithm
     // Positive costs for building, negative costs for "saving" destroy costs
-    // std::vector<Edge> kruskal_edges;
-    // for (int i = 0; i < n; ++i) {
-    //     for (int j = i + 1; j < n; ++j) {
-    //         if (country[i][j] == '1') {
-    //             // Cost to *not* destroy (i.e., keep) is -destroy[i][j]
-    //             kruskal_edges.push_back({-letterToCost(destroy[i][j]), i, j, false}); // false means existing road
-    //         } else {
-    //             // Cost to build is build[i][j]
-    //             kruskal_edges.push_back({letterToCost(build[i][j]), i, j, true}); // true means new road
-    //         }
-    //     }
-    // }
+    std::vector<Edge> kruskal_edges;
+    for (int i = 0; i < n; ++i) {
+        for (int j = i + 1; j < n; ++j) {
+            if (country[i][j] == '1') {
+                // Cost to *not* destroy (i.e., keep) is -destroy[i][j]
+                kruskal_edges.push_back({-letterToCost(destroy[i][j]), i, j, false}); // false means existing road
+            } else {
+                // Cost to build is build[i][j]
+                kruskal_edges.push_back({letterToCost(build[i][j]), i, j, true}); // true means new road
+            }
+        }
+    }
 
     // Sort edges by their effective cost (ascending)
-    // sort(kruskal_edges.begin(), kruskal_edges.end());
-    sort(edges.begin(), edges.end());
+    sort(kruskal_edges.begin(), kruskal_edges.end());
 
     int mst_cost_sum = 0;
     int edges_in_mst = 0;
 
-    for (auto& e : edges) {
+    for (auto& e : kruskal_edges) {
         if (uf.unionSet(e.u, e.v)) {
             mst_cost_sum += e.cost;
             edges_in_mst++;
