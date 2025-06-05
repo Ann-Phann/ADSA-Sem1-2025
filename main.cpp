@@ -164,51 +164,101 @@ std::vector<Edge> buildEdges (const std::vector<std::string>& country,
 }
 
 // this function is not single responsibility
-int Kruskal_Cost(std::vector<Edge>& edges, int numberOfCity) {
+// int Kruskal_Cost(std::vector<Edge>& edges, int numberOfCity) {
+//     int totalCost = 0;
+
+//     // std::sort(edges.begin(), edges.end());
+
+//     // Sort all edges: destroy edges by cost (ascending), then build edges
+//     // sort(edges.begin(), edges.end(), [](const Edge& a, const Edge& b) {
+//     //     if (!a.isBuild && !b.isBuild) return a.cost < b.cost; // Destroy edges sorted
+//     //     if (a.isBuild && b.isBuild) return a.cost < b.cost;   // Build edges sorted
+//     //     return !a.isBuild; // Process destroy edges first
+//     // });
+
+//     // call and use union find in this algorithm
+//     UnionFind uf(numberOfCity);
+
+//     // we shouldn't do this because we should start with existing edges --> this is free
+//     // for (auto& e : edges) {
+//     //     // if build 
+//     //     if (e.isBuild) {
+//     //         // then check if it is not in the same unionset
+//     //         if (uf.unionSet(e.u, e.v)) {
+//     //             totalCost += e.cost;
+//     //         }
+//     //     } 
+//     //     // case: in the same set: can't union --> destroy
+//     //     else {
+//     //         if (!uf.unionSet(e.u, e.v)) {
+//     //             totalCost += e.cost;
+//     //         }
+//     //     }
+//     // }
+
+//     // First, process all existing edges (destroy edges)
+//     sort(edges.begin(), edges.end());
+
+//     for (auto& e : edges) {
+//         if (!e.isBuild) {
+//             if (!uf.unionSet(e.u, e.v)) {
+//                 totalCost += e.cost; // Need to destroy this edge
+//             }
+//         }
+//     }
+
+//     // Then, process all build edges
+//     // sort(edges.begin(), edges.end());
+//     for (auto& e : edges) {
+//         if (e.isBuild) {
+//             if (uf.unionSet(e.u, e.v)) {
+//                 totalCost += e.cost; // Build this edge
+//             }
+//         }
+//     }
+
+//     return totalCost;
+// }
+
+int Kruskal_Cost(std::vector<Edge>& edges, int n) {
     int totalCost = 0;
+    UnionFind uf(n);
 
-    std::sort(edges.begin(), edges.end());
+    // Separate destroy and build edges
+    std::vector<Edge> destroyEdges;
+    std::vector<Edge> buildEdges;
 
-    // call and use union find in this algorithm
-    UnionFind uf(numberOfCity);
-
-    // for (auto& e : edges) {
-    //     // if build 
-    //     if (e.isBuild) {
-    //         // then check if it is not in the same unionset
-    //         if (uf.unionSet(e.u, e.v)) {
-    //             totalCost += e.cost;
-    //         }
-    //     } 
-    //     // case: in the same set: can't union --> destroy
-    //     else {
-    //         if (!uf.unionSet(e.u, e.v)) {
-    //             totalCost += e.cost;
-    //         }
-    //     }
-    // }
-
-    // First, process all existing edges (destroy edges)
     for (auto& e : edges) {
         if (!e.isBuild) {
-            if (!uf.unionSet(e.u, e.v)) {
-                totalCost += e.cost; // Need to destroy this edge
-            }
+            destroyEdges.push_back(e);
+        } else {
+            buildEdges.push_back(e);
         }
     }
 
-    // Then, process all build edges
-    sort(edges.begin(), edges.end());
-    for (auto& e : edges) {
-        if (e.isBuild) {
-            if (uf.unionSet(e.u, e.v)) {
-                totalCost += e.cost; // Build this edge
-            }
+    // Sort destroy edges by cost (cheapest first)
+    sort(destroyEdges.begin(), destroyEdges.end());
+
+    // Process destroy edges first
+    for (auto& e : destroyEdges) {
+        if (!uf.unionSet(e.u, e.v)) {
+            totalCost += e.cost; // Destroy this edge
+        }
+    }
+
+    // Sort build edges by cost (cheapest first)
+    sort(buildEdges.begin(), buildEdges.end());
+
+    // Process build edges
+    for (auto& e : buildEdges) {
+        if (uf.unionSet(e.u, e.v)) {
+            totalCost += e.cost; // Build this edge
         }
     }
 
     return totalCost;
 }
+
 
 int main () {
     int numberOfCity;
@@ -227,6 +277,7 @@ int main () {
     // run kruskal and calculate the cost
     int cost = Kruskal_Cost(edges, numberOfCity);
 
+ 
     // output printing
     std::cout << cost << "\n";
 
